@@ -11,23 +11,19 @@
     <div v-if="users.length" class="user-cards-container">
       <div v-for="user in users" :key="user.id" class="user-card">
         <div class="card-header">
-          <div>
-            <h4 class="user-name">{{ user.name }}</h4>
-            <p class="user-email">{{ user.email }}</p>
-          </div>
           <span class="id-badge">ID: {{ user.id }}</span>
         </div>
-        <div class="address-section">
-          <div class="address-icon">
+        <div class="user-main-row">
+          <div class="user-main-item"><strong>Nome:</strong> {{ user.name }}</div>
+          <div class="user-main-item"><strong>Email:</strong> {{ user.email }}</div>
+        </div>
+        <div class="user-address-row">
+          <span class="address-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.1.4-.27.662-.477.352-.275.755-.636 1.198-1.071 1.64-1.64 3.005-3.824 3.005-6.227 0-3.9-3.134-7-7-7s-7 3.1-7 7c0 2.403 1.365 4.587 3.005 6.227.443.435.846.796 1.198 1.071.262.207.476.377.662.477a5.741 5.741 0 00.281.14l.018.008.006.003zM10 11.75a2.75 2.75 0 100-5.5 2.75 2.75 0 000 5.5z" clip-rule="evenodd" />
             </svg>
-          </div>
-          <div class="address-details">
-            <p>{{ user.street }}, {{ user.number || 'S/N' }} - {{ user.complement }}</p>
-            <p>{{ user.district }}, {{ user.city }} - {{ user.state }}</p>
-            <p>CEP: {{ user.zipcode }}</p>
-          </div>
+          </span>
+          <span><strong>Endereço:</strong> {{ user.street }}, {{ user.number || 'S/N' }} {{ user.complement ? '- ' + user.complement : '' }} - {{ user.district }}, {{ user.city }} - {{ user.state }}, CEP: {{ user.zipcode }}</span>
         </div>
         <div class="card-footer">
           Cadastrado em: {{ new Date(user.created_at).toLocaleDateString('pt-BR') }}
@@ -100,7 +96,7 @@ defineExpose({ fetchUsers });
 .list-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #4f46e5;
 }
 
 .api-badge {
@@ -129,16 +125,16 @@ defineExpose({ fetchUsers });
 }
 
 .user-card {
-  background-color: #ffffff;
+  background-color: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 2.5rem;
   transition: box-shadow 0.3s, border-color 0.3s;
 }
 
 .user-card:hover {
-  border-color: #c7d2fe;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: #7c3aed;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.08), 0 2px 4px -1px rgba(124, 58, 237, 0.06);
 }
 
 .card-header {
@@ -153,7 +149,7 @@ defineExpose({ fetchUsers });
 .user-name {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: #4f46e5;
 }
 
 .user-email {
@@ -162,35 +158,46 @@ defineExpose({ fetchUsers });
 }
 
 .id-badge {
-  background-color: #f1f5f9;
-  color: #475569;
+  background-color: #e0e7ff;
+  color: #4338ca;
   padding: 0.2rem 0.6rem;
   border-radius: 6px;
   font-size: 0.8rem;
 }
 
-.address-section {
+.user-main-row {
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
-
-.address-icon {
-  color: #64748b;
-  margin-right: 1rem;
-  flex-shrink: 0;
-}
-
-.address-icon svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.address-details {
-  font-size: 0.95rem;
+.user-main-item {
   color: #334155;
-  line-height: 1.6;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-
+.user-address-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #334155;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.address-icon {
+  color: #7c3aed;
+  margin-right: 0.3rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.address-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
 .card-footer {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -211,26 +218,40 @@ defineExpose({ fetchUsers });
 
 .pagination-controls button {
   padding: 0.5rem 1.25rem;
-  background-color: #4f46e5;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed);
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.3s;
+  transition: background 0.3s;
 }
 
 .pagination-controls button:disabled {
-  background-color: #a5b4fc;
+  background: #e0e7ff;
+  color: #a5b4fc;
   cursor: not-allowed;
 }
 
 .pagination-controls button:hover:not(:disabled) {
-  background-color: #4338ca;
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
 }
 
 .pagination-controls span {
     color: #475569;
     font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .user-main-row {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .user-address-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
 }
 </style> 

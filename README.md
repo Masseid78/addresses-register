@@ -1,66 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Smartlead Addresses
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de Endereços: Gerencie usuários e seus endereços com integração automática do ViaCEP.
 
-## About Laravel
+## Tecnologias Utilizadas
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Laravel 11** (API RESTful)
+- **Vue.js 3** (Frontend SPA)
+- **Docker** e **Docker Compose**
+- **MySQL**
+- **Axios** (requisições HTTP)
+- **CSS puro** com `<style scoped>`
+- **Testes automatizados** (PHPUnit)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+##  Pré-requisitos
 
-## Learning Laravel
+Antes de começar, você precisa ter instalado **TODOS** os itens abaixo:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- [Docker](https://www.docker.com/products/docker-desktop) (obrigatório)
+- [Docker Compose](https://docs.docker.com/compose/) (já vem junto no Docker Desktop)
+- [Git](https://git-scm.com/) (para clonar o repositório)
+- [Node.js 18+](https://nodejs.org/) (recomendado para desenvolvimento local, mas não obrigatório se usar só Docker)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/) (gerenciador de pacotes Node, use `npm install -g yarn`)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+> **Atenção:** Não é necessário instalar PHP, Composer ou MySQL na sua máquina. Tudo roda dentro dos containers Docker.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Passo a Passo para Rodar o Projeto
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone o repositório
 
-### Premium Partners
+```sh
+git clone https://github.com/seu-usuario/smartlead-addresses.git
+cd smartlead-addresses
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 2. Suba os containers Docker
 
-## Contributing
+```sh
+docker-compose down
+docker-compose up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Isso irá criar três containers:
+- `app` (Laravel + Node)
+- `db` (MySQL)
+- `web` (Nginx)
 
-## Code of Conduct
+### 3. Instale as dependências do frontend
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```sh
+docker-compose exec app yarn install
+```
 
-## Security Vulnerabilities
+### 4. Rode as migrations do banco de dados
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```sh
+docker-compose exec app php artisan migrate
+```
 
-## License
+### 5. Rode os seeders para popular o banco de dados
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```sh
+docker-compose exec app php artisan db:seed
+```
+
+### 6. Inicie o servidor de desenvolvimento do Vite (frontend)
+
+```sh
+docker-compose exec app yarn dev
+```
+
+> O Vite já está configurado para rodar na porta 5173 e aceitar conexões externas.
+
+### 7. Acesse a aplicação
+
+Abra o navegador em: [http://localhost:8000](http://localhost:8000)
+
+---
+
+## Rodando os Testes
+
+Para rodar os testes automatizados do backend:
+
+```sh
+docker-compose exec app php artisan test
+```
+
+---
+
+## Estrutura do Projeto
+
+- `app/` - Backend Laravel (controllers, models, requests)
+- `resources/js/components/` - Componentes Vue.js 3 (SPA)
+- `resources/views/welcome.blade.php` - View principal que carrega o Vue
+- `docker/` - Configurações de Docker e Nginx
+- `database/` - Migrations
+- `tests/` - Testes automatizados (PHPUnit)
+
+---
+
+## Dicas e Solução de Problemas
+
+- **Erro de dependências Node:**
+  - Rode `docker-compose exec app yarn install` novamente.
+  - Se persistir, apague `node_modules` e `yarn.lock` e rode `yarn install` de novo.
+- **Porta 5173 não acessível:**
+  - Certifique-se que o Vite está rodando (`docker-compose exec app yarn dev`).
+  - A porta 5173 está exposta no `docker-compose.yml`.
+- **Banco de dados não conecta:**
+  - Aguarde alguns segundos após subir os containers antes de rodar as migrations.
+- **Mudanças no código não aparecem:**
+  - Certifique-se de que o Vite está rodando e recarregue a página.
+
+---
+
+## Funcionalidades
+
+- Cadastro de usuários com endereço preenchido automaticamente via ViaCEP (CEP)
+- Listagem paginada de usuários em formato de cartões
+- Interface moderna, responsiva e intuitiva
+- API versionada (`/api/v1`)
+- Máscara de CEP e loading no frontend
+- Testes de unidade e integração
+
+---
+
+##  Contato
+
+Dúvidas? Fale com o desenvolvedor!
+
+---
+
+## Deploy
+
+### Vercel (Frontend)
+
+> Instruções para deploy na Vercel serão adicionadas aqui.
+
+> Projeto desenvolvido para desafio técnico. Qualquer dúvida, sugestão ou bug, abra uma issue ou entre em contato.

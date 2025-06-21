@@ -19,11 +19,18 @@
           </div>
         </div>
 
-        <div class="tabs">
-          <button :class="{ active: activeTab === 'list' }" @click="activeTab = 'list'">
+        <!-- Abas customizadas -->
+        <div class="tab-group">
+          <button :class="['tab-btn', { active: activeTab === 'list' }]" @click="activeTab = 'list'">
+            <span class="tab-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25v-2.25A2.25 2.25 0 016.75 15.75h10.5a2.25 2.25 0 012.25 2.25v2.25" /></svg>
+            </span>
             Lista de Usuários
           </button>
-          <button :class="{ active: activeTab === 'form' }" @click="activeTab = 'form'">
+          <button :class="['tab-btn', { active: activeTab === 'form' }]" @click="activeTab = 'form'">
+            <span class="tab-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            </span>
             Cadastrar Usuário
           </button>
         </div>
@@ -70,12 +77,12 @@ const handleUserCreated = () => {
 .app-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #4f46e5;
 }
 
 .app-header p {
   font-size: 1.1rem;
-  color: #475569;
+  color: #64748b;
 }
 
 .content-wrapper {
@@ -84,10 +91,11 @@ const handleUserCreated = () => {
 }
 
 .users-management-panel {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
   overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 
 .panel-header {
@@ -123,41 +131,61 @@ const handleUserCreated = () => {
   opacity: 0.9;
 }
 
-.tabs {
+.tab-group {
   display: flex;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0 0 0 0;
+  gap: 0;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.tabs button {
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #475569;
-  background-color: transparent;
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  color: #64748b;
   border: none;
+  border-radius: 0;
+  padding: 1rem 2rem 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   cursor: pointer;
-  position: relative;
-  transition: color 0.3s;
+  box-shadow: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s;
+  margin-bottom: -2px;
 }
 
-.tabs button:hover {
-  color: #1e293b;
+.tab-btn .tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tabs button.active {
+.tab-btn .tab-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
   color: #4f46e5;
-  font-weight: 600;
 }
 
-.tabs button.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background-color: #4f46e5;
+.tab-btn.active {
+  background: none;
+  color: #4f46e5;
+  border-bottom: 2.5px solid #4f46e5;
+  font-weight: 700;
+}
+
+.tab-btn.active .tab-icon svg {
+  color: #7c3aed;
+}
+
+.tab-btn:not(.active):hover {
+  background: none;
+  color: #4f46e5;
 }
 
 .tab-content {

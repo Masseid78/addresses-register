@@ -8,15 +8,26 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
+use App\Services\UserService;
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
+    protected $users;
+    protected $service;
+
+    public function __construct(UserRepository $users, UserService $service)
+    {
+        $this->users = $users;
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(): JsonResponse
     {
-        return response()->json(User::paginate(10));
+        return response()->json($this->users->allPaginated(10));
     }
 
     /**
@@ -24,25 +35,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): JsonResponse
     {
-        $validatedData = $request->validated();
-
-        $zipcode = preg_replace('/[^0-9]/', '', $validatedData['zipcode']);
-
-        $response = Http::get("https://viacep.com.br/ws/{$zipcode}/json/")->json();
-
-        if (isset($response['erro']) && $response['erro'] === true) {
-            return response()->json(['message' => 'Invalid zipcode.'], 400);
-        }
-
-        $userData = array_merge($validatedData, [
-            'street'   => $response['logradouro'],
-            'district' => $response['bairro'],
-            'city'     => $response['localidade'],
-            'state'    => $response['uf'],
-        ]);
-
-        $user = User::create($userData);
-
+        $user = $this->service->createUserWithAddress($request->validated());
         return response()->json($user, 201);
     }
 
