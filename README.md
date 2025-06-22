@@ -102,21 +102,6 @@ docker-compose exec app php artisan test
 
 ---
 
-## Dicas e Solução de Problemas
-
-- **Erro de dependências Node:**
-  - Rode `docker-compose exec app yarn install` novamente.
-  - Se persistir, apague `node_modules` e `yarn.lock` e rode `yarn install` de novo.
-- **Porta 5173 não acessível:**
-  - Certifique-se que o Vite está rodando (`docker-compose exec app yarn dev`).
-  - A porta 5173 está exposta no `docker-compose.yml`.
-- **Banco de dados não conecta:**
-  - Aguarde alguns segundos após subir os containers antes de rodar as migrations.
-- **Mudanças no código não aparecem:**
-  - Certifique-se de que o Vite está rodando e recarregue a página.
-
----
-
 ## Funcionalidades
 
 - Cadastro de usuários com endereço preenchido automaticamente via ViaCEP (CEP)
@@ -127,17 +112,3 @@ docker-compose exec app php artisan test
 - Testes de unidade e integração
 
 ---
-
-##  Contato
-
-Dúvidas? Fale com o desenvolvedor!
-
----
-
-## Deploy
-
-### Vercel (Frontend)
-
-> Instruções para deploy na Vercel serão adicionadas aqui.
-
-> Projeto desenvolvido para desafio técnico. Qualquer dúvida, sugestão ou bug, abra uma issue ou entre em contato.

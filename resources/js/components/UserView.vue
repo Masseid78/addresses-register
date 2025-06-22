@@ -24,7 +24,6 @@
           </div>
         </div>
 
-        <!-- Abas customizadas -->
         <div class="tab-group">
           <button
             :class="['tab-btn', { active: activeTab === 'list' }]"
@@ -93,12 +92,12 @@ const handleUserCreated = () => {
 .app-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #38a9af;
+  color: #ffffff;
 }
 
 .app-header p {
   font-size: 1.1rem;
-  color: #64748b;
+  color: #ffffff;
 }
 
 .content-wrapper {
@@ -193,5 +192,16 @@ const handleUserCreated = () => {
 
 .tab-content {
   padding: 1.5rem;
+}
+.main-container {
+    background: linear-gradient(-45deg, #dadfe3, #0b5155, #0eafb3, #07ebe1);
+    background-size: 400% 400%;
+    animation: gradientBG-5f28164b 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
 }
 </style>

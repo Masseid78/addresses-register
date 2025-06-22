@@ -1,6 +1,5 @@
 <template>
   <div class="main-container">
-    <!-- cabeçalho geral -->
     <header class="app-header">
       <h1>Sistema de Endereços</h1>
       <p>Gerencie usuários e seus endereços com integração automática do ViaCEP</p>
@@ -8,19 +7,12 @@
 
     <div class="content-wrapper">
       <div class="users-management-panel">
-
-        <!-- panel header com degradê e ícone -->
         <div class="panel-header">
           <div class="panel-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M15 19.128a9.38 9.38 0 002.625.372
-                       9.337 9.337 0 004.121-2.305c.394-.442.723-1.047.973-1.748
-                       l-.082.04c-.09.042-.18.083-.27.124a18.3 18.3 0 01-6.142 2.924
-                       .5.5 0 01-.564-.328V5.084a.5.5 0 01.564-.473
-                       c2.25.52 4.256 1.63 5.863 3.064.522.478.96 1.012 1.31 1.587
-                       l-.082-.04c-.09-.043-.18-.084-.27-.125a18.3 18.3 0 01-6.142-2.924
-                       .5.5 0 01-.564.328v13.078a.5.5 0 01.564.473z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                    d="M10 2a5 5 0 100 10A5 5 0 0010 2zM2 18a8 8 0 1116 0H2z"
+                    clip-rule="evenodd" />
             </svg>
           </div>
           <div>
@@ -29,8 +21,7 @@
           </div>
         </div>
 
-        <!-- abas pill-shape -->
-        <div class="tabs">
+        <div class="tabs" v-if="!selectedUserId">
           <button
             :class="{ active: activeTab === 'list' }"
             @click="activeTab = 'list'"
@@ -56,12 +47,28 @@
           </button>
         </div>
 
-        <!-- conteúdo das abas -->
+        <!-- conteúdo das abas ou detalhe -->
         <div class="tab-content">
-          <UserList v-if="activeTab === 'list'" ref="userList" />
-          <UserForm  v-else               @user-created="handleUserCreated" />
-        </div>
+          <!-- 1) Tela de detalhe -->
+          <UserDetail
+            v-if="selectedUserId"
+            :user-id="selectedUserId"
+            @close="selectedUserId = null"
+          />
 
+          <!-- 2) Lista ou Form -->
+          <template v-else>
+            <UserList
+              v-if="activeTab === 'list'"
+              ref="userList"
+              @view-user="showUserDetail"
+            />
+            <UserForm
+              v-else
+              @user-created="onUserCreated"
+            />
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -69,16 +76,24 @@
 
 <script setup>
 import { ref } from 'vue';
-import UserForm from '../components/UserForm.vue';
-import UserList from '../components/UserList.vue';
+import UserList   from '../components/UserList.vue';
+import UserForm   from '../components/UserForm.vue';
+import UserDetail from '../components/UserDetail.vue';
 
-const activeTab = ref('list');
-const userList  = ref(null);
+const activeTab      = ref('list');
+const selectedUserId = ref(null);
+const userList       = ref(null);
 
-const handleUserCreated = () => {
+// Abre a tela de detalhes com o ID clicado
+function showUserDetail(id) {
+  selectedUserId.value = id;
+}
+
+// Depois de cadastrar, volta pra lista e recarrega
+function onUserCreated() {
   activeTab.value = 'list';
   setTimeout(() => userList.value?.fetchUsers(), 100);
-};
+}
 </script>
 
 <style scoped>
@@ -117,7 +132,6 @@ const handleUserCreated = () => {
   overflow: hidden;
 }
 
-/* cabeçalho do painel com degradê */
 .panel-header {
   display: flex;
   align-items: center;
@@ -131,6 +145,8 @@ const handleUserCreated = () => {
   border-radius: 50%;
   padding: 0.75rem;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .panel-icon svg {
   width: 2rem;
@@ -144,8 +160,6 @@ const handleUserCreated = () => {
   font-size: 0.9rem;
   opacity: 0.9;
 }
-
-/* abas pill-shape */
 .tabs {
   display: flex;
   background-color: #f1f5f9;
@@ -155,24 +169,28 @@ const handleUserCreated = () => {
   margin: 1rem 0;
 }
 .tabs button {
+  border: 1px solid #e2e8f0;
+  background-color: #f1f5f9;
+  border-radius: 0.5rem;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: none;
   color: #475569;
   font-weight: 500;
-  border: none;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color .2s, color .2s;
+  margin-right: 0.5rem;
 }
-.tabs button:hover:not(.active) {
-  background-color: #eef2ff;
+.tabs button:last-child {
+  margin-right: 0;
 }
 .tabs button.active {
+  border: 1px solid #246587;
   background-color: #ffffff;
+  border-radius: 0.5rem;
   color: #4f46e5;
   font-weight: 600;
 }
@@ -185,4 +203,21 @@ const handleUserCreated = () => {
 .tab-content {
   padding: 1.5rem;
 }
+.main-container {
+  background: linear-gradient(-45deg,
+    #4f46e5, 
+    #7c3aed, 
+    #4f46e5,
+    #7c3aed
+  );
+  background-size: 400% 400%;    
+  animation: gradientBG 15s ease infinite; 
+}
+
+@keyframes gradientBG {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
 </style>

@@ -22,9 +22,12 @@
             type="email"
             id="email"
             v-model="form.email"
+            :class="{'input-error': emailError}"
             placeholder="Digite seu e-mail"
             required
+            @input="debouncedValidateEmail"
           />
+          <span v-if="emailError" class="input-error-message">{{ emailError }}</span>
         </div>
         <div class="form-group">
           <label for="zipcode">CEP *</label>
@@ -54,7 +57,7 @@
             type="text"
             id="street"
             v-model="form.street"
-            placeholder="Preenchido pelo CEP"
+            placeholder=""
             required
           />
         </div>
@@ -64,7 +67,7 @@
             type="text"
             id="district"
             v-model="form.district"
-            placeholder="Preenchido pelo CEP"
+            placeholder=""
             required
           />
         </div>
@@ -129,8 +132,29 @@ const address        = ref({ street:'', district:'', city:'', state:'' });
 const addressLoading = ref(false);
 const addressError   = ref('');
 const showAddressBox = ref(false);
+const emailError     = ref('');
+let emailDebounceTimeout = null;
 
 const emit = defineEmits(['user-created']);
+
+const emailRegex = /^[\w-.]+@[\w-]+\.[a-zA-Z]{2,}$/;
+
+function validateEmail() {
+  if (!form.value.email) {
+    emailError.value = '';
+    return;
+  }
+  if (!emailRegex.test(form.value.email)) {
+    emailError.value = 'E-mail inválido';
+  } else {
+    emailError.value = '';
+  }
+}
+
+function debouncedValidateEmail() {
+  clearTimeout(emailDebounceTimeout);
+  emailDebounceTimeout = setTimeout(validateEmail, 500);
+}
 
 const formatZip = v => {
   let d = v.replace(/\D/g,'');
@@ -144,11 +168,13 @@ async function onCepInput(e) {
   addressError.value = '';
   address.value = {street:'',district:'',city:'',state:''};
 
-  if (form.value.zipcode.length === 9) {
+  // Chama ViaCEP só se o CEP tiver 8 dígitos numéricos
+  const digits = form.value.zipcode.replace(/\D/g, '');
+  if (digits.length === 8) {
     addressLoading.value = true;
     showAddressBox.value = true;
     try {
-      const { data } = await axios.get(`https://viacep.com.br/ws/${form.value.zipcode.replace('-','')}/json/`);
+      const { data } = await axios.get(`https://viacep.com.br/ws/${digits}/json/`);
       if (data.erro) {
         addressError.value = 'CEP não encontrado.';
       } else {
@@ -172,18 +198,17 @@ async function onCepInput(e) {
 }
 
 async function submitForm() {
+  validateEmail();
+  if (emailError.value) return;
   loading.value = true;
   toastError.value = '';
   try {
     await axios.post('/api/v1/users', form.value);
-    
-    // Sucesso, agora vamos parar o loading e avisar o componente pai
     loading.value = false;
-    await nextTick(); // Garante que a UI (botão) atualize ANTES de trocar de aba
+    await nextTick();
     emit('user-created');
-
   } catch (err) {
-    loading.value = false; // Para o loading em caso de erro também
+    loading.value = false;
     toastError.value = err.response?.data?.message || 'Erro ao cadastrar.';
     setTimeout(() => { toastError.value = ''; }, 4000);
   }
@@ -270,7 +295,7 @@ async function submitForm() {
   animation: spin 1s linear infinite;
 }
 .spinner .path {
-  stroke: #246587; /* Usando a cor do tema para consistência */
+  stroke: #246587;
   stroke-linecap: round;
 }
 @keyframes spin {
@@ -311,6 +336,14 @@ button:hover:not(:disabled) {
   border-radius: 6px;
   text-align: center;
   font-weight: 600;
+}
+.input-error {
+  border-color: #ef4444 !important;
+}
+.input-error-message {
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
 }
 @media(max-width:640px) {
   .form-container {
