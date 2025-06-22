@@ -26,6 +26,11 @@ class UserApiTest extends TestCase
             'email' => 'john.doe@example.com',
             'zipcode' => '99999-999',
             'number' => '10A',
+            'street' => 'Rua Teste',
+            'district' => 'Bairro Teste',
+            'city' => 'Cidade Teste',
+            'state' => 'TS',
+            'complement' => '',
         ];
 
         $response = $this->postJson('/api/v1/users', $userData);

@@ -1,23 +1,23 @@
 <?php
-
 namespace App\Repositories;
 
 use App\Models\User;
 
 class UserRepository
 {
-    public function allPaginated($perPage = 10)
+    public function allPaginated(int $perPage = 10)
     {
-        return User::orderByDesc('created_at')->paginate($perPage);
+        // ordena pelo id ascendente
+        return User::orderBy('id','asc')->paginate($perPage);
     }
 
-    public function find($id)
+    public function find(int $id): User
     {
         return User::findOrFail($id);
     }
 
-    public function create(array $data)
+    public function create(array $data): User
     {
         return User::create($data);
     }
-} 
+}

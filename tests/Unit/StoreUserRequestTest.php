@@ -2,12 +2,15 @@
 
 namespace Tests\Unit\Requests;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Validator;
 
 class StoreUserRequestTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_validation_passes_with_valid_data()
     {
         $data = [
@@ -15,6 +18,11 @@ class StoreUserRequestTest extends TestCase
             'email' => 'test@example.com',
             'zipcode' => '12345-678',
             'number' => '123',
+            'street' => 'Rua Teste',
+            'district' => 'Bairro Teste',
+            'city' => 'Cidade Teste',
+            'state' => 'TS',
+            'complement' => 'Apto 101',
         ];
 
         $request = new StoreUserRequest();

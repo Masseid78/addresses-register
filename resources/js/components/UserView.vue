@@ -9,9 +9,14 @@
       <div class="users-management-panel">
         <div class="panel-header">
           <div class="panel-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-2.305c.394-.442.723-1.047.973-1.748l-.082.04c-.09.042-.18.083-.27.124a18.3 18.3 0 01-6.142 2.924.5.5 0 01-.564-.328V5.084a.5.5 0 01.564-.473c2.25.52 4.256 1.63 5.863 3.064.522.478.96 1.012 1.31 1.587l-.082-.04c-.09-.043-.18-.084-.27-.125a18.3 18.3 0 01-6.142-2.924.5.5 0 01-.564.328v13.078a.5.5 0 01.564.473z" />
-            </svg>
+  <svg xmlns="http://www.w3.org/2000/svg"
+       fill="currentColor"
+       viewBox="0 0 20 20">
+    <path fill-rule="evenodd"
+          d="M10 2a5 5 0 100 10A5 5 0 0010 2zM2 18a8 8 0 1116 0H2z"
+          clip-rule="evenodd" />
+  </svg>
+
           </div>
           <div>
             <h2>Gerenciamento de Usuários</h2>
@@ -21,15 +26,27 @@
 
         <!-- Abas customizadas -->
         <div class="tab-group">
-          <button :class="['tab-btn', { active: activeTab === 'list' }]" @click="activeTab = 'list'">
+          <button
+            :class="['tab-btn', { active: activeTab === 'list' }]"
+            @click="activeTab = 'list'"
+          >
             <span class="tab-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25v-2.25A2.25 2.25 0 016.75 15.75h10.5a2.25 2.25 0 012.25 2.25v2.25" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25v-2.25A2.25 2.25 0 016.75 15.75h10.5a2.25 2.25 0 012.25 2.25v2.25" />
+              </svg>
             </span>
             Lista de Usuários
           </button>
-          <button :class="['tab-btn', { active: activeTab === 'form' }]" @click="activeTab = 'form'">
+          <button
+            :class="['tab-btn', { active: activeTab === 'form' }]"
+            @click="activeTab = 'form'"
+          >
             <span class="tab-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
             </span>
             Cadastrar Usuário
           </button>
@@ -37,7 +54,7 @@
 
         <div class="tab-content">
           <UserList v-if="activeTab === 'list'" ref="userList" />
-          <UserForm v-if="activeTab === 'form'" @user-created="handleUserCreated" />
+          <UserForm  v-if="activeTab === 'form'" @user-created="handleUserCreated" />
         </div>
       </div>
     </div>
@@ -50,11 +67,10 @@ import UserForm from './UserForm.vue';
 import UserList from './UserList.vue';
 
 const activeTab = ref('list');
-const userList = ref(null);
+const userList  = ref(null);
 
 const handleUserCreated = () => {
   activeTab.value = 'list';
-  // Adiciona um pequeno delay para garantir que a lista seja recarregada
   setTimeout(() => {
     userList.value?.fetchUsers();
   }, 100);
@@ -77,7 +93,7 @@ const handleUserCreated = () => {
 .app-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #4f46e5;
+  color: #38a9af;
 }
 
 .app-header p {
@@ -92,23 +108,24 @@ const handleUserCreated = () => {
 
 .users-management-panel {
   background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-  overflow: hidden;
   border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08),
+              0 4px 6px  -2px rgba(0,0,0,0.03);
+  overflow: hidden;
 }
 
 .panel-header {
   display: flex;
   align-items: center;
   padding: 1.5rem;
-  background: linear-gradient(90deg, #4f46e5, #7c3aed);
+  background: linear-gradient(90deg, #46e5dd 0%, #246587 100%);
   color: white;
 }
 
 .panel-icon {
   margin-right: 1rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255,255,255,0.1);
   border-radius: 50%;
   padding: 0.75rem;
   display: flex;
@@ -131,15 +148,11 @@ const handleUserCreated = () => {
   opacity: 0.9;
 }
 
+/* Abas customizadas */
 .tab-group {
   display: flex;
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  margin: 0 0 0 0;
-  gap: 0;
   border-bottom: 2px solid #e2e8f0;
+  margin: 0 1rem 0 1rem;
 }
 
 .tab-btn {
@@ -149,46 +162,36 @@ const handleUserCreated = () => {
   background: none;
   color: #64748b;
   border: none;
-  border-radius: 0;
-  padding: 1rem 2rem 0.75rem 2rem;
+  padding: 1rem 2rem 0.75rem;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: none;
   border-bottom: 2px solid transparent;
   transition: color 0.2s, border-bottom 0.2s;
   margin-bottom: -2px;
 }
 
-.tab-btn .tab-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .tab-btn .tab-icon svg {
   width: 1.25rem;
   height: 1.25rem;
-  color: #4f46e5;
+  color: #246587;
 }
 
 .tab-btn.active {
-  background: none;
-  color: #4f46e5;
-  border-bottom: 2.5px solid #4f46e5;
+  color: #246587;
   font-weight: 700;
+  border-bottom: 2.5px solid #246587;
 }
 
 .tab-btn.active .tab-icon svg {
-  color: #7c3aed;
+  color: #246587;
 }
 
 .tab-btn:not(.active):hover {
-  background: none;
-  color: #4f46e5;
+  color: #246587;
 }
 
 .tab-content {
   padding: 1.5rem;
 }
-</style> 
+</style>

@@ -9,10 +9,9 @@
     <div class="content-wrapper">
       <div class="users-management-panel">
 
-        <!-- panel header com gradiente e ícone -->
+        <!-- panel header com degradê e ícone -->
         <div class="panel-header">
           <div class="panel-icon">
-            <!-- seu SVG de usuário -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round"
                     d="M15 19.128a9.38 9.38 0 002.625.372
@@ -30,16 +29,16 @@
           </div>
         </div>
 
-        <!-- abas com pill‐shape, ícones e texto -->
+        <!-- abas pill-shape -->
         <div class="tabs">
           <button
             :class="{ active: activeTab === 'list' }"
             @click="activeTab = 'list'"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="tab-icon" viewBox="0 0 20 20" fill="currentColor">
-              <!-- ícone usuário -->
-              <path d="M10 4a3 3 0 100 6 3 3 0 000-6z" />
-              <path fill-rule="evenodd" d="M4 14s1-1 6-1 6 1 6 1v2H4v-2z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M10 4a3 3 0 100 6 3 3 0 000-6zm1 
+                       8h-2a4 4 0 00-4 4v1h10v-1a4 4 0 00-4-4z" />
             </svg>
             Lista de Usuários
           </button>
@@ -48,7 +47,6 @@
             @click="activeTab = 'form'"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="tab-icon" viewBox="0 0 20 20" fill="currentColor">
-              <!-- ícone mais -->
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M10 5a1 1 0 011 1v3h3a1 1 0 110 
                        2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 
@@ -91,7 +89,6 @@ const handleUserCreated = () => {
   padding: 2rem;
 }
 
-/* cabeçalho geral */
 .app-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -106,13 +103,11 @@ const handleUserCreated = () => {
   color: #475569;
 }
 
-/* container central */
 .content-wrapper {
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* painel branco com sombra */
 .users-management-panel {
   background-color: #ffffff;
   border-radius: 12px;
@@ -127,10 +122,8 @@ const handleUserCreated = () => {
   display: flex;
   align-items: center;
   padding: 1.5rem;
-  background: linear-gradient(90deg, #332d9d, #207cc1);
+  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
   color: white;
-  width: 100%;
-  height: 18px;
 }
 .panel-icon {
   margin-right: 1rem;
@@ -144,25 +137,23 @@ const handleUserCreated = () => {
   height: 2rem;
 }
 .panel-header h2 {
-  font-size: 17px;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 .panel-header p {
-  font-size: 8px;
+  font-size: 0.9rem;
   opacity: 0.9;
-  margin-top: -9px;
 }
 
-/* abas pill‐shape */
+/* abas pill-shape */
 .tabs {
   display: flex;
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   overflow: hidden;
-  margin: 1rem;
+  margin: 1rem 0;
 }
-
 .tabs button {
   flex: 1;
   display: flex;
@@ -170,31 +161,27 @@ const handleUserCreated = () => {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: transparent;
+  background: none;
   color: #475569;
   font-weight: 500;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
 }
-
-.tabs button:not(.active):hover {
+.tabs button:hover:not(.active) {
   background-color: #eef2ff;
 }
-
 .tabs button.active {
   background-color: #ffffff;
   color: #4f46e5;
   font-weight: 600;
 }
-
 .tab-icon {
   width: 1.25rem;
   height: 1.25rem;
   color: inherit;
 }
 
-/* conteúdo interno das abas */
 .tab-content {
   padding: 1.5rem;
 }
